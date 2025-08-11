@@ -10,7 +10,7 @@ select date_trunc('week', date)::DATE as wc_monday,
        at_product,
        sum(ctc) as spend
 from marketing_insights.bbc_mna_oc_client_database
-where wc_monday = '2025-07-21'
+where wc_monday = /*'2025-07-21'*/ '<params.run_date>'
   and at_product = 'iplayer'
 group by 1, 2, 3
 having sum(ctc) > 100; --change to the week macro in MAP
@@ -32,9 +32,9 @@ with step_1 as (SELECT date_trunc('week', dt::date) as wc_monday,
                        count(audience_id) as impressions
                 FROM s3_audience.audience_activity
                 WHERE source = 'Custom'
-                  AND wc_monday = '20250721'
-/*                    to_char(('<params.run_date>')::DATE, 'YYYYMMDD') and to_char(('<params.run_date>' + 6)::DATE, 'YYYYMMDD')
-*/                  AND app_type = 'responsive'
+                  AND wc_monday = /*'20250721'*/
+                    to_char(('<params.run_date>')::DATE, 'YYYYMMDD')
+                  AND app_type = 'responsive'
                   AND event_action = 'view'
                   AND (item_link LIKE '%%xtor=CS8-1000%%'
                     OR (item_link LIKE '%%at_medium=owned_display%%' AND item_link LIKE '%%at_campaign_type=owned%%')
@@ -76,7 +76,7 @@ select date_trunc('week', date) as wc_monday,
        accutics_brand_id        as at_brand,
        sum(tvr_adults_16_plus)  as tvrs
 from marketing_insights.in_tv_enriched
-where wc_monday = '2025-07-21'
+where wc_monday = '<params.run_date>'
   and accutics_product_promoted = 'iplayer'
 group by 1, 2, 3;
 
@@ -178,12 +178,23 @@ select *,
            end as media_average_label
 from get_percentile
 where wc_date BETWEEN
-    date_trunc('week', current_date) - interval '15 weeks'
-    AND date_trunc('week', current_date)
+    date_trunc('week', ) - interval '15 weeks'
+    AND date_trunc('week', )
 order by wc_date, average_norm_media;
 
 
+------------------------------------------------------------------------------------------------------------------------
+--- Unload Report to S3 ------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
 
+UNLOAD ('SELECT * FROM media_enriched')
+TO 's3://map-input-output/nj-ccog-content-media-report'
+CREDENTIALS 'aws_access_key_id=<params.AWS_ACCESS_KEY_ID>;aws_secret_access_key=<params.AWS_SECRET_ACCESS_KEY>;token=<params.TOKEN>'
+CSV
+GZIP
+ALLOWOVERWRITE
+HEADER
+PARALLEL OFF;
 
 
 
