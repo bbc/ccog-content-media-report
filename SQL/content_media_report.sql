@@ -187,9 +187,9 @@ select *,
            end as media_average_label
 from get_percentile
 where wc_date BETWEEN
-    date_trunc('week', '<params.run_date>'::date) - interval '15 weeks'
+    date_trunc('week', '<params.run_date>'::date) - interval '14 weeks'
     AND date_trunc('week', '<params.run_date>'::date)
-order by wc_date, average_norm_media;
+order by wc_date desc, average_norm_media desc;
 
 
 ------------------------------------------------------------------------------------------------------------------------
