@@ -197,7 +197,7 @@ order by wc_date desc, average_norm_media desc;
 ------------------------------------------------------------------------------------------------------------------------
 
 UNLOAD ('SELECT * FROM media_enriched')
-TO 's3://map-input-output/nj-ccog-content-media-report'
+TO 's3://map-input-output/nj-ccog-content-media-report/nj-ccog-content-media-report.csv'
 CREDENTIALS 'aws_access_key_id=<params.AWS_ACCESS_KEY_ID>;aws_secret_access_key=<params.AWS_SECRET_ACCESS_KEY>;token=<params.TOKEN>'
 CSV
 GZIP
