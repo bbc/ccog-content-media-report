@@ -17,7 +17,7 @@ having sum(ctc) > 100; --change to the week macro in MAP
 
 --- Upsert current week into historical digital spend  -----------------------------------------------------------------
 delete from marketing_insights.in_content_digital_spend
-where wc_date in (select distinct wc_date from digital_spend);
+where wc_date in (select distinct wc_monday from digital_spend);
 
 insert into marketing_insights.in_content_digital_spend
 select *
