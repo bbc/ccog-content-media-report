@@ -15,7 +15,10 @@ where wc_monday = /*'2025-07-21'*/ '<params.run_date>'
 group by 1, 2, 3
 having sum(ctc) > 100; --change to the week macro in MAP
 
---- Insert current week into historical digital spend  -----------------------------------------------------------------
+--- Upsert current week into historical digital spend  -----------------------------------------------------------------
+delete from marketing_insights.in_content_digital_spend
+where wc_date in (select distinct wc_date from digital_spend);
+
 insert into marketing_insights.in_content_digital_spend
 select *
 from digital_spend;
@@ -54,7 +57,10 @@ where product_promoted ilike 'iplayer'
 and impressions > 10000
 GROUP BY 1, 2, 3;
 
---- Insert current week into historical owned impressions  -------------------------------------------------------------
+--- Upsert current week into historical owned impressions  -------------------------------------------------------------
+delete from marketing_insights.in_content_owned_impressions
+where wc_date in (select distinct wc_date from owned_impressions);
+
 insert into marketing_insights.in_content_owned_impressions
 select * from owned_impressions;
 
@@ -80,7 +86,10 @@ where wc_monday = '<params.run_date>'
   and accutics_product_promoted = 'iplayer'
 group by 1, 2, 3;
 
---- Insert current week into historical owned tvrs  --------------------------------------------------------------------
+--- Upsert current week into historical owned tvrs  --------------------------------------------------------------------
+delete from marketing_insights.in_content_owned_tvrs
+where wc_date in (select distinct wc_date from owned_tvrs);
+
 insert into marketing_insights.in_content_owned_tvrs
 select *
 from owned_tvrs;
