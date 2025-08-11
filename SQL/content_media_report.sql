@@ -17,7 +17,7 @@ having sum(ctc) > 100; --change to the week macro in MAP
 
 --- Upsert current week into historical digital spend  -----------------------------------------------------------------
 delete from marketing_insights.in_content_digital_spend
-where wc_date in (select distinct wc_monday from digital_spend);
+where wc_monday in (select distinct wc_monday from digital_spend);
 
 insert into marketing_insights.in_content_digital_spend
 select *
@@ -59,7 +59,7 @@ GROUP BY 1, 2, 3;
 
 --- Upsert current week into historical owned impressions  -------------------------------------------------------------
 delete from marketing_insights.in_content_owned_impressions
-where wc_date in (select distinct wc_date from owned_impressions);
+where wc_monday in (select distinct wc_monday from owned_impressions);
 
 insert into marketing_insights.in_content_owned_impressions
 select * from owned_impressions;
@@ -88,7 +88,7 @@ group by 1, 2, 3;
 
 --- Upsert current week into historical owned tvrs  --------------------------------------------------------------------
 delete from marketing_insights.in_content_owned_tvrs
-where wc_date in (select distinct wc_date from owned_tvrs);
+where wc_monday in (select distinct wc_monday from owned_tvrs);
 
 insert into marketing_insights.in_content_owned_tvrs
 select *
