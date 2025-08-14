@@ -179,12 +179,18 @@ with get_titles as (select distinct case
      get_percentile as (select *,
                                ntile(10) over (order by average_norm_media) as percentile_average
                         from get_norm_media)
-select *,
+select wc_date,
+       at_brand,
+       title,
+       digital_spend,
+       impressions,
+       tvrs,
+       percentile_average,
        case
            when percentile_average >= 1 and percentile_average <= 2 then 'low'
            when percentile_average >= 3 and percentile_average <= 8 then 'medium'
            when percentile_average >= 9 then 'high'
-           end as media_average_label
+           end as media_label
 from get_percentile
 where wc_date BETWEEN
     date_trunc('week', '<params.run_date>'::date) - interval '14 weeks'
