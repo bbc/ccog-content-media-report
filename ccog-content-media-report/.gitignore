@@ -1,0 +1,63 @@
+# Ignore R associated files
+.Rproj.user
+.Rhistory
+
+# Ignore R data
+.RData
+
+# Docs, since reproducible
+man/
+
+# ignore produced vignettes
+inst/doc/*
+vignettes/*.html
+vignettes/*.pdf
+
+# ignore OS X Finder files
+*.DS_Store
+
+# ignore emacs backup files
+*~
+
+# exclude IDE-project files from RStudio and Eclipse
+*.Rproj
+*.project
+
+# C extensions
+*.so
+
+# Django stuff:
+*.log
+
+# DotEnv configuration
+.env
+
+# Database
+*.db
+*.rdb
+
+# Pycharm
+.idea
+
+# VS Code
+.vscode/
+
+# Spyder
+.spyproject/
+
+# Jupyter NB Checkpoints
+.ipynb_checkpoints/
+
+# exclude data from source control by default
+data/
+
+# Mac OS-specific storage files
+.DS_Store
+
+# vim
+*.swp
+*.swo
+
+# Virtualenv (renv)
+renv/library/
+renv/*.ignore
