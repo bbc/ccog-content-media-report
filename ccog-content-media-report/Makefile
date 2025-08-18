@@ -36,8 +36,6 @@ update_environment: create_environment renv.lock
 	$(R_COMMAND)  -e "renv::activate()" -e "renv::restore(library='renv/library')"
 	touch renv.lock
 
-create_environment:
-	$(R_COMMAND) -e "renv::init()"
 
 ## Make Dataset
 data: requirements
