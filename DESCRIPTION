@@ -1,0 +1,21 @@
+Package: ccog-content-media-report
+Title: ccog-content-media-report
+Version: 0.0.1
+Description: What the package does (one paragraph).
+Authors@R: person(strsplit("Firstname Lastname", ' ')[[1]][1],
+				  strsplit("Firstname Lastname", ' ')[[1]][2],
+				  email = "firstname.lastname@bbc.co.uk",
+                  role = c("aut", "cre"))
+Depends: R (>= 3.3.1)
+Imports:
+	renv
+Suggests:
+    testthat,
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
+License: MIT
+Encoding: UTF-8
+LazyData: true
+URL: https://github.com/the person or group who owns the project/ccog-content-media-report
+BugReports: https://github.com/the person or group who owns the project/ccog-content-media-report/issues

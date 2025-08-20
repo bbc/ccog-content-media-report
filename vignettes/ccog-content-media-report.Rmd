@@ -1,0 +1,12 @@
+---
+title: "ccog-content-media-report"
+author: "Firstname Lastname"
+date: \today
+output: pdf_document
+bibliography: references.bib
+vignette: >
+  %\VignetteIndexEntry{ ccog-content-media-report }
+  %\VignetteEngine{knitr::rmarkdown}
+  %\usepackage[utf8]{inputenc} 
+---
+
