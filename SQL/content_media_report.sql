@@ -28,7 +28,7 @@ from digital_spend;
 ------------------------------------------------------------------------------------------------------------------------
 
 --- Get current week owned impressions  --------------------------------------------------------------------------------
-drop table if exists owned_impressions;
+/*drop table if exists owned_impressions;
 create temp table owned_impressions as
 with step_1 as (SELECT date_trunc('week', dt::date) as wc_monday,
                        item_link,
@@ -212,7 +212,7 @@ CSV
 GZIP
 ALLOWOVERWRITE
 HEADER
-PARALLEL OFF;
+PARALLEL OFF;*/
 
 
 
