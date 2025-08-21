@@ -10,7 +10,7 @@ select date_trunc('week', date)::DATE as wc_monday,
        at_product,
        sum(ctc) as spend
 from marketing_insights.bbc_mna_oc_client_database
-where wc_monday = /*'2025-07-21'*/ '<params.run_date>'
+where wc_monday = /*'2025-07-21'*/ (date_trunc('week', '<params.run_date>'::date) - interval '14 weeks') and '<params.run_date>'
   and at_product = 'iplayer'
 group by 1, 2, 3
 having sum(ctc) > 100; --change to the week macro in MAP
@@ -36,7 +36,7 @@ with step_1 as (SELECT date_trunc('week', dt::date) as wc_monday,
                 FROM s3_audience.audience_activity
                 WHERE source = 'Custom'
                   AND dt between /*to_char(('2025-08-04'::date), 'YYYYMMDD') and (to_char(('2025-08-04'::date), 'YYYYMMDD') + 6)*/
-                    to_char(('<params.run_date>')::DATE, 'YYYYMMDD') and (to_char(('<params.run_date>'::DATE), 'YYYYMMDD') + 6)
+                    to_char(('<params.run_date>'::date - 98), 'YYYYMMDD') and to_char(('<params.run_date>'::date + 6), 'YYYYMMDD')
                   AND app_type = 'responsive'
                   AND event_action = 'view'
                   AND (item_link LIKE '%%xtor=CS8-1000%%'
@@ -56,7 +56,6 @@ FROM step_1
 where product_promoted ilike 'iplayer'
 and impressions > 10000
 GROUP BY 1, 2, 3;
-
 
 --- Upsert current week into historical owned impressions  -------------------------------------------------------------
 delete from marketing_insights.in_content_owned_impressions
@@ -83,9 +82,9 @@ select date_trunc('week', date) as wc_monday,
        accutics_brand_id        as at_brand,
        sum(tvr_adults_16_plus)  as tvrs
 from marketing_insights.in_tv_enriched
-where wc_monday = '<params.run_date>' /*'2025-07-21'*/
+where wc_monday = /*'2025-08-04'*/ (date_trunc('week', '<params.run_date>'::date) - interval '14 weeks') and '<params.run_date>'
   and accutics_product_promoted = 'iplayer'
-group by 1, 2, 3;
+group by 1, 2, 3; --m002g634
 
 --- Upsert current week into historical owned tvrs  --------------------------------------------------------------------
 delete from marketing_insights.in_content_owned_tvrs
@@ -200,6 +199,7 @@ where wc_date BETWEEN
           AND date_trunc('week', '2025-07-21'::date)*/
 order by wc_date desc, average_norm_media desc;
 
+create table marketing_insights.in_content_media as select * from media_enriched;
 
 ------------------------------------------------------------------------------------------------------------------------
 --- Unload Report to S3 ------------------------------------------------------------------------------------------------
