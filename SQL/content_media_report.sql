@@ -10,7 +10,7 @@ select date_trunc('week', date)::DATE as wc_monday,
        at_product,
        sum(ctc) as spend
 from marketing_insights.bbc_mna_oc_client_database
-where wc_monday = /*'2025-07-21'*/ (date_trunc('week', '<params.run_date>'::date) - interval '14 weeks') and '<params.run_date>'
+where wc_monday between /*'2025-07-21'*/ (date_trunc('week', '<params.run_date>'::date) - interval '14 weeks') and '<params.run_date>'
   and at_product = 'iplayer'
 group by 1, 2, 3
 having sum(ctc) > 100; --change to the week macro in MAP
@@ -28,7 +28,7 @@ from digital_spend;
 ------------------------------------------------------------------------------------------------------------------------
 
 --- Get current week owned impressions  --------------------------------------------------------------------------------
-/*drop table if exists owned_impressions;
+drop table if exists owned_impressions;
 create temp table owned_impressions as
 with step_1 as (SELECT date_trunc('week', dt::date) as wc_monday,
                        item_link,
@@ -82,7 +82,7 @@ select date_trunc('week', date) as wc_monday,
        accutics_brand_id        as at_brand,
        sum(tvr_adults_16_plus)  as tvrs
 from marketing_insights.in_tv_enriched
-where wc_monday = /*'2025-08-04'*/ (date_trunc('week', '<params.run_date>'::date) - interval '14 weeks') and '<params.run_date>'
+where wc_monday between /*'2025-08-04'*/ (date_trunc('week', '<params.run_date>'::date) - interval '14 weeks') and '<params.run_date>'
   and accutics_product_promoted = 'iplayer'
 group by 1, 2, 3; --m002g634
 
