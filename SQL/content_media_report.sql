@@ -200,12 +200,19 @@ where wc_date BETWEEN
 order by wc_date desc, average_norm_media desc;
 
 --- Upsert last 15 weeks into in_content_media  ------------------------------------------------------------------------
-delete from marketing_insights.in_content_media
+delete from marketing_insights.in_content_media_v2
+where wc_date in (select distinct wc_date from media_enriched);
+
+insert into marketing_insights.in_content_media_v2
+select *
+from media_enriched;
+
+/*delete from marketing_insights.in_content_media
 where wc_date in (select distinct wc_date from media_enriched);
 
 insert into marketing_insights.in_content_media
 select *
-from media_enriched;
+from media_enriched;*/
 
 ------------------------------------------------------------------------------------------------------------------------
 --- Unload Report to S3 ------------------------------------------------------------------------------------------------
