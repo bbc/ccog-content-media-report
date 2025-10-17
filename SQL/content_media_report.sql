@@ -83,7 +83,7 @@ select date_trunc('week', date) as wc_monday,
        sum(tvr_adults_16_plus)  as tvrs
 from marketing_insights.in_tv_enriched
 where wc_monday between /*'2025-08-04'*/ (date_trunc('week', '<params.run_date>'::date) - interval '14 weeks') and '<params.run_date>'
-  and accutics_product_promoted = 'iplayer'
+  and product_promoted = 'iplayer'
 group by 1, 2, 3; --m002g634
 
 --- Upsert current week into historical owned tvrs  --------------------------------------------------------------------
