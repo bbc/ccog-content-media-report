@@ -45,7 +45,7 @@ date_end_char <- as.character(date_end)
 date_start_char <- as.character(date_start)
 
 # Obtain Content Data for the last 15 weeks ----
-data = dbGetQuery(conn, paste0("SELECT * FROM marketing_insights.in_content_media
+data = dbGetQuery(conn, paste0("SELECT * FROM marketing_insights.in_content_media_v2
                                         WHERE wc_date between '",
                                date_start_char,
                                "' and '",
