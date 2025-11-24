@@ -30,31 +30,16 @@ from digital_spend;
 --- Get current week owned impressions  --------------------------------------------------------------------------------
 drop table if exists owned_impressions;
 create temp table owned_impressions as
-with step_1 as (SELECT date_trunc('week', dt::date) as wc_monday,
-                       item_link,
-                       count(audience_id) as impressions
-                FROM s3_audience.audience_activity
-                WHERE source = 'Custom'
-                  AND dt between /*to_char(('2025-08-04'::date), 'YYYYMMDD') and (to_char(('2025-08-04'::date), 'YYYYMMDD') + 6)*/
-                    to_char(('<params.run_date>'::date - 98), 'YYYYMMDD') and to_char(('<params.run_date>'::date + 6), 'YYYYMMDD')
-                  AND app_type = 'responsive'
-                  AND event_action = 'view'
-                  AND (item_link LIKE '%%xtor=CS8-1000%%'
-                    OR (item_link LIKE '%%at_medium=owned_display%%' AND item_link LIKE '%%at_campaign_type=owned%%')
-                    OR (item_link LIKE '%%at_medium=display_ad%%' AND item_link LIKE '%%at_campaign_type=owned%%')
-                    OR (item_link LIKE '%%at_medium=display%%' AND item_link LIKE '%%at_campaign_type=owned%%')
-                    )
-                  AND ((item_link LIKE '%%at_product=iplayer%%') OR (item_link LIKE '%%at_product=sounds%%'))
-                GROUP BY 1, 2)
+SELECT date_trunc('week', date::date) as wc_monday,
+       at_brand,
+       brand_promoted,
+       sum(impressions)               as impressions
 
-SELECT wc_monday,
-       REGEXP_SUBSTR(item_link, '^.*[?&]at_brand=([a-zA-Z0-9]*)[^&at_]?', 1, 1,
-                     'e')                                                               AS at_brand,
-       REGEXP_SUBSTR(item_link, '^.*[?&]at_product=([a-zA-Z0-9_]*)[^&at_]?', 1, 1, 'e') AS product_promoted,
-       sum(impressions)                                                                 as impressions
-FROM step_1
-where product_promoted ilike 'iplayer'
-and impressions > 10000
+FROM marketing_insights.in_owned
+WHERE date between /*to_char(('2025-08-04'::date), 'YYYYMMDD') and (to_char(('2025-08-04'::date), 'YYYYMMDD') + 6)*/
+    ('<params.run_date>'::date - 98) and ('<params.run_date>'::date + 6)
+  and brand_promoted ilike 'iplayer'
+  and impressions > 10000
 GROUP BY 1, 2, 3;
 
 --- Upsert current week into historical owned impressions  -------------------------------------------------------------
