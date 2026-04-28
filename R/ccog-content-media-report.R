@@ -56,7 +56,7 @@ processed = data %>% arrange(desc(wc_date),desc(percentile_average)) %>%
   mutate(digital_spend = formatC(digital_spend,format = "f", big.mark = ",",digits =0),
          owned_impressions = formatC(impressions,format = "f", big.mark = ",",digits =0),
          owned_tvrs = round(tvrs,0)) %>% 
-  select(-c(impressions,tvrs)) %>% 
+  select(-c(impressions,tvrs,average_norm_media)) %>% 
   relocate(-c(percentile_average,media_label))
 
 ### Set S3 Bucket and Write Data ###
