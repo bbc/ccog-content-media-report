@@ -170,6 +170,7 @@ select wc_date,
        digital_spend,
        impressions,
        tvrs,
+       average_norm_media,
        percentile_average,
        case
            when percentile_average >= 1 and percentile_average <= 2 then 'low'
